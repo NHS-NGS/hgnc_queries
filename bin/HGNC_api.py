@@ -77,9 +77,13 @@ def get_alias(gene_symbol):
     res = data["response"]["docs"]
 
     if len(res) == 1:
-        aliases = res[0]["alias_symbol"]
-        print("Alias symbols for {}: {}".format(gene_symbol, ", ".join(aliases)))
-        return aliases
+        if "alias_symbol" in res:
+            aliases = res[0]["alias_symbol"]
+            print("Alias symbols for {}: {}".format(gene_symbol, ", ".join(aliases)))
+            return aliases
+        else:
+            print("No aliases for {}".format(gene_symbol))
+            return 
     else:
         print("Couldn't get alias for {}".format(gene_symbol))
         return
@@ -93,9 +97,13 @@ def get_prev_symbol(gene_symbol):
     res = data["response"]["docs"]
 
     if len(res) == 1:
-        prev_symbol = res[0]["prev_symbol"]
-        print("Previous symbols for {}: {}".format(gene_symbol, ", ".join(prev_symbol)))
-        return prev_symbol
+        if "prev_symbol" in res:
+            prev_symbol = res[0]["prev_symbol"]
+            print("Previous symbols for {}: {}".format(gene_symbol, ", ".join(prev_symbol)))
+            return prev_symbol
+        else:
+            print("No previous symbol for {}".format(gene_symbol))
+            return 
     else:
         print("Couldn't get prev symbols for {}".format(gene_symbol))
         return 
