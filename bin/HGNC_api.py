@@ -25,7 +25,7 @@ def get_api_response(full_url):
     return data
 
 
-def get_new_symbol(gene_symbol):
+def get_new_symbol(gene_symbol, verbose = True):
     """ get the new symbol of a gene """
 
     ext = "search/prev_symbol/{}".format(gene_symbol)
@@ -33,22 +33,26 @@ def get_new_symbol(gene_symbol):
     res = data["response"]["docs"]
 
     if res == []:
-        print("No new symbol found for {}".format(gene_symbol))
+        if verbose:
+            print("No new symbol found for {}".format(gene_symbol))
         return
 
     elif len(res) > 1:
-        print("2 or more different genes share this symbol {}:".format(gene_symbol))
+        if verbose:
+            print("2 or more different genes share this symbol {}:".format(gene_symbol))
         
         for gene in res:
-            print(gene)
+            if verbose:
+                print(gene)
 
         return
     else:
-        print("New symbol found for {}: {}".format(gene_symbol, res[0]["symbol"]))
+        if verbose:
+            print("New symbol found for {}: {}".format(gene_symbol, res[0]["symbol"]))
         return res[0]["symbol"]
 
 
-def get_gene_starting_with(gene_symbol):
+def get_gene_starting_with(gene_symbol, verbose = True):
     """ get the genes that start with the symbol given """
 
     ext = "search/symbol/{}*".format(gene_symbol)
@@ -56,20 +60,24 @@ def get_gene_starting_with(gene_symbol):
     res = data["response"]["docs"]
 
     if res == []:
-        print("No gene found starting with {}".format(gene_symbol))
+        if verbose:
+            print("No gene found starting with {}".format(gene_symbol))
         return
     
     else:
         gene_symbols = [res[i]["symbol"] for i in range(len(res))]
-        print("Found these genes starting with {}:".format(gene_symbol))
+        
+        if verbose:
+            print("Found these genes starting with {}:".format(gene_symbol))
         
         for symbol in gene_symbols:
-            print(symbol)
+            if verbose:
+                print(symbol)
 
         return gene_symbols
 
 
-def get_alias(gene_symbol):
+def get_alias(gene_symbol, verbose = True):
     """ get the aliases of a gene """
 
     ext = "fetch/symbol/{}".format(gene_symbol)
@@ -79,17 +87,22 @@ def get_alias(gene_symbol):
     if len(res) == 1:
         if "alias_symbol" in res[0]:
             aliases = res[0]["alias_symbol"]
-            print("Alias symbols for {}: {}".format(gene_symbol, ", ".join(aliases)))
+    
+            if verbose:
+                print("Alias symbols for {}: {}".format(gene_symbol, ", ".join(aliases)))
+    
             return aliases
         else:
-            print("No aliases for {}".format(gene_symbol))
+            if verbose:
+                print("No aliases for {}".format(gene_symbol))
             return 
     else:
-        print("Couldn't get alias for {}".format(gene_symbol))
+        if verbose:
+            print("Couldn't get alias for {}".format(gene_symbol))
         return
 
 
-def get_prev_symbol(gene_symbol):
+def get_prev_symbol(gene_symbol, verbose = True):
     """ get the aliases of a gene """
 
     ext = "fetch/symbol/{}".format(gene_symbol)
@@ -99,17 +112,23 @@ def get_prev_symbol(gene_symbol):
     if len(res) == 1:
         if "prev_symbol" in res[0]:
             prev_symbol = res[0]["prev_symbol"]
-            print("Previous symbols for {}: {}".format(gene_symbol, ", ".join(prev_symbol)))
+            if verbose:
+                print("Previous symbols for {}: {}".format(gene_symbol, ", ".join(prev_symbol)))
+    
             return prev_symbol
         else:
-            print("No previous symbol for {}".format(gene_symbol))
+            if verbose:
+                print("No previous symbol for {}".format(gene_symbol))
+
             return 
     else:
-        print("Couldn't get prev symbols for {}".format(gene_symbol))
+        if verbose:
+            print("Couldn't get prev symbols for {}".format(gene_symbol))
+
         return 
 
 
-def get_id(gene_symbol):
+def get_id(gene_symbol, verbose = True):
     """ get the id of gene symbol """
 
     ext = "fetch/symbol/{}".format(gene_symbol)
@@ -118,10 +137,15 @@ def get_id(gene_symbol):
 
     if len(res) == 1:
         gene_id = res[0]["hgnc_id"]
-        print("{}\t{}".format(gene_symbol, gene_id))
+        
+        if verbose:
+            print("{}\t{}".format(gene_symbol, gene_id))
+    
         return gene_id
     else:
-        print("Couldn't get the id for {}".format(gene_symbol))
+        if verbose:
+            print("Couldn't get the id for {}".format(gene_symbol))
+            
         return 
 
 
