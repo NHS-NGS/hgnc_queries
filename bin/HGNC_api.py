@@ -103,7 +103,7 @@ def get_alias(gene_symbol, verbose = True):
 
 
 def get_prev_symbol(gene_symbol, verbose = True):
-    """ get the aliases of a gene """
+    """ get the previous symbol of a gene """
 
     ext = "fetch/symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -149,11 +149,33 @@ def get_id(gene_symbol, verbose = True):
         return 
 
 
+def get_symbol_from_id(gene_id, verbose = True):
+    """ get the gene symbol from a gene id """
+
+    ext = "search/hgnc_id/{}".format(gene_id)
+    data = get_api_response("{}/{}".format(URL, ext))
+    res = data["response"]["docs"]
+
+    if len(res) == 1:
+        gene_symbol = res[0]["symbol"]
+
+        if verbose:
+            print("{}\t{}".format(gene_id, gene_symbol))
+
+        return gene_symbol
+    elif len(res) == 0:
+        if verbose:
+            print("Got not symbol for {}".format(gene_id))
+
+        return
+
+
 def main(path):
     pass
 
 
 if __name__ == "__main__":
+    # get_new_symbol("KAL1")
     parser = argparse.ArgumentParser(description = "HGNC api interface (kinda)")
     subparsers = parser.add_subparsers(help = "Commands")
 
@@ -177,6 +199,16 @@ if __name__ == "__main__":
     gene_id.add_argument("gene_symbol", help = "Gene symbol")
     gene_id.set_defaults(func = get_id)
 
-    args = parser.parse_args()
+    id2symbol = subparsers.add_parser("id2symbol", help = "Get the gene symbol from the id")
+    id2symbol.add_argument("gene_id", help = "Gene ID")
+    id2symbol.set_defaults(func = get_symbol_from_id)
 
-    res = args.func(args.gene_symbol)
+    args = parser.parse_args()
+    
+    if hasattr(args, "gene_symbol"):
+        gene_symbol = args.gene_symbol
+        args.func(gene_symbol)
+
+    elif hasattr(args, "gene_id"):
+        gene_id = args.gene_id
+        args.func(args.gene_id)
