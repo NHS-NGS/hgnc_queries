@@ -8,3 +8,4 @@ Use HGNC api to get:
 - Previous symbol --> `python HGNC_api.py prev_symbol $gene`
 - Gene starting with --> `python HGNC_api.py gene $gene`
 - HGNC id --> `python HGNC_api.py id $gene`
+- Symbol from id --> `python HGNC_api.py id2symbol $gene_id`
