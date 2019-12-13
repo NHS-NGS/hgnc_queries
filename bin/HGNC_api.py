@@ -131,7 +131,7 @@ def get_prev_symbol(gene_symbol, verbose = True):
 def get_id(gene_symbol, verbose = True):
     """ get the id of gene symbol """
 
-    ext = "fetch/symbol/{}".format(gene_symbol)
+    ext = "search/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
     res = data["response"]["docs"]
 
@@ -211,4 +211,4 @@ if __name__ == "__main__":
 
     elif hasattr(args, "gene_id"):
         gene_id = args.gene_id
-        args.func(args.gene_id)
+        args.func(gene_id)
