@@ -77,9 +77,7 @@ def get_gene_starting_with(gene_symbol, verbose = True):
         return gene_symbols
 
 
-def get_alias(gene_symbol, verbose = True):
-    """ get the aliases of a gene """
-
+def get_alias_main_symbol(gene_symbol, verbose = True):
     ext = "fetch/symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
     res = data["response"]["docs"]
@@ -89,7 +87,10 @@ def get_alias(gene_symbol, verbose = True):
             aliases = res[0]["alias_symbol"]
     
             if verbose:
-                print("Alias symbols for {}: {}".format(gene_symbol, ", ".join(aliases)))
+                if isinstance(aliases, list):
+                    aliases = ", ".join(aliases)
+
+                print("Alias symbols for {}: {}".format(gene_symbol, aliases))
     
             return aliases
         else:
@@ -101,6 +102,37 @@ def get_alias(gene_symbol, verbose = True):
             print("Couldn't get alias for {}".format(gene_symbol))
         return
 
+
+def get_alias(gene_symbol, verbose = True):
+    """ get the aliases of a gene """
+
+    ext = "search/alias_symbol/{}".format(gene_symbol)
+    data = get_api_response("{}/{}".format(URL, ext))
+    res = data["response"]["docs"]
+
+    if len(res) == 1:
+        if "symbol" in res[0]:
+            aliases = res[0]["symbol"]
+    
+            if verbose:
+                if isinstance(aliases, list):
+                    aliases = ", ".join(aliases)
+
+                print("Alias symbols for {}: {}".format(gene_symbol, aliases))
+    
+            return aliases
+        else:
+            if verbose:
+                print("No aliases for {}".format(gene_symbol))
+            return 
+    else:
+        aliases = get_alias_main_symbol(gene_symbol)
+
+        if aliases:
+            return aliases
+        else:
+            return
+        
 
 def get_prev_symbol(gene_symbol, verbose = True):
     """ get the previous symbol of a gene """
