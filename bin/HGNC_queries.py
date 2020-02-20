@@ -86,13 +86,13 @@ def get_alias_main_symbol(gene_symbol, verbose = True):
         if "alias_symbol" in res[0]:
             aliases = res[0]["alias_symbol"]
     
-            if verbose:
-                if isinstance(aliases, list):
-                    aliases = ", ".join(aliases)
+            if isinstance(aliases, list):
+                aliases = ", ".join(aliases)
 
+            if verbose:
                 print("Alias symbols for {}: {}".format(gene_symbol, aliases))
     
-            return aliases
+            return aliases.split()
         else:
             if verbose:
                 print("No aliases for {}".format(gene_symbol))
@@ -114,13 +114,13 @@ def get_alias(gene_symbol, verbose = True):
         if "symbol" in res[0]:
             aliases = res[0]["symbol"]
     
-            if verbose:
-                if isinstance(aliases, list):
-                    aliases = ", ".join(aliases)
+            if isinstance(aliases, list):
+                aliases = ", ".join(aliases)
 
+            if verbose:
                 print("Alias symbols for {}: {}".format(gene_symbol, aliases))
     
-            return aliases
+            return aliases.split()
         else:
             if verbose:
                 print("No aliases for {}".format(gene_symbol))
@@ -175,10 +175,14 @@ def get_id(gene_symbol, verbose = True):
     
         return gene_id
     else:
+        for data in res:
+            if data["symbol"] == gene_symbol:
+                return data["hgnc_id"]
+
         if verbose:
             print("Couldn't get the id for {}".format(gene_symbol))
             
-        return 
+    return 
 
 
 def get_symbol_from_id(gene_id, verbose = True):
