@@ -1,11 +1,9 @@
-HGNC_api.py 
-
-Located in `/mnt/storage/home/kimy/projects/HGNC_api/bin/`
+# hgnc_queries.py 
 
 Use HGNC api to get:
-- New symbol --> `python HGNC_api.py new_symbol $gene`
-- Alias --> `python HGNC_api.py alias $gene`
-- Previous symbol --> `python HGNC_api.py prev_symbol $gene`
-- Gene starting with --> `python HGNC_api.py gene $gene`
-- HGNC id --> `python HGNC_api.py id $gene`
-- Symbol from id --> `python HGNC_api.py id2symbol $gene_id`
+- New symbol --> `python hgnc_queries.py new_symbol $gene`
+- Alias --> `python hgnc_queries.py alias $gene`
+- Previous symbol --> `python hgnc_queries.py prev_symbol $gene`
+- Gene starting with --> `python hgnc_queries.py gene $gene`
+- HGNC id --> `python hgnc_queries.py id $gene`
+- Symbol from id --> `python hgnc_queries.py id2symbol $gene_id`
