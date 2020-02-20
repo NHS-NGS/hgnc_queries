@@ -1,4 +1,4 @@
-""" HGNC.py
+""" hgnc_queries.py
 
 Fetch data from HGNC api
 """
@@ -25,8 +25,16 @@ def get_api_response(full_url):
     return data
 
 
-def get_new_symbol(gene_symbol, verbose = True):
-    """ get the new symbol of a gene """
+def get_new_symbol(gene_symbol: str, verbose: bool = True):
+    """ get the new symbol of a gene
+    
+    Args:
+    - gene_symbol: str
+    - verbose: bool
+
+    Returns:
+    - str
+    """
 
     ext = "search/prev_symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -52,8 +60,16 @@ def get_new_symbol(gene_symbol, verbose = True):
         return res[0]["symbol"]
 
 
-def get_gene_starting_with(gene_symbol, verbose = True):
-    """ get the genes that start with the symbol given """
+def get_gene_starting_with(gene_symbol: str, verbose: bool = True):
+    """ get the genes that start with the symbol given 
+    
+    Args:
+    - gene_symbol: str
+    - verbose: bool
+
+    Returns:
+    - list of str
+    """
 
     ext = "search/symbol/{}*".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -77,7 +93,17 @@ def get_gene_starting_with(gene_symbol, verbose = True):
         return gene_symbols
 
 
-def get_alias_main_symbol(gene_symbol, verbose = True):
+def get_alias(gene_symbol, verbose = True):
+    """ get aliases of given symbol
+
+    Args:
+    - gene_symbol: str
+    - verbose: bool
+
+    Returns:
+    - list of str
+    """
+
     ext = "fetch/symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
     res = data["response"]["docs"]
@@ -86,25 +112,37 @@ def get_alias_main_symbol(gene_symbol, verbose = True):
         if "alias_symbol" in res[0]:
             aliases = res[0]["alias_symbol"]
     
-            if isinstance(aliases, list):
-                aliases = ", ".join(aliases)
-
             if verbose:
-                print("Alias symbols for {}: {}".format(gene_symbol, aliases))
+                if isinstance(aliases, list):
+                    display_aliases = ", ".join(aliases)
+                else:
+                    display_aliases = aliases
+
+                print("Alias symbols for {}: {}".format(gene_symbol, display_aliases))
     
-            return aliases.split()
+            return aliases
         else:
             if verbose:
                 print("No aliases for {}".format(gene_symbol))
+
             return 
     else:
         if verbose:
             print("Couldn't get alias for {}".format(gene_symbol))
+
         return
 
 
-def get_alias(gene_symbol, verbose = True):
-    """ get the aliases of a gene """
+def get_main_symbol(gene_symbol, verbose = True):
+    """ get the main symbol of given symbol
+    
+    Args:
+    - gene_symbol: str
+    - verbose: bool
+
+    Returns:
+    - list of str
+    """
 
     ext = "search/alias_symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -112,30 +150,31 @@ def get_alias(gene_symbol, verbose = True):
 
     if len(res) == 1:
         if "symbol" in res[0]:
-            aliases = res[0]["symbol"]
-    
-            if isinstance(aliases, list):
-                aliases = ", ".join(aliases)
+            main_symbol = res[0]["symbol"]
 
             if verbose:
-                print("Alias symbols for {}: {}".format(gene_symbol, aliases))
+                print("Main symbol for {}: {}".format(gene_symbol, main_symbol))
     
-            return aliases.split()
+            return main_symbol
         else:
             if verbose:
-                print("No aliases for {}".format(gene_symbol))
+                print("No main_symbol for {}".format(gene_symbol))
+
             return 
     else:
-        aliases = get_alias_main_symbol(gene_symbol)
-
-        if aliases:
-            return aliases
-        else:
-            return
+        return
         
 
 def get_prev_symbol(gene_symbol, verbose = True):
-    """ get the previous symbol of a gene """
+    """ get the previous symbol of a gene
+    
+    Args:
+    - gene_symbol: str
+    - verbose: bool
+
+    Returns:
+    - list of str
+    """
 
     ext = "fetch/symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -144,6 +183,7 @@ def get_prev_symbol(gene_symbol, verbose = True):
     if len(res) == 1:
         if "prev_symbol" in res[0]:
             prev_symbol = res[0]["prev_symbol"]
+
             if verbose:
                 print("Previous symbols for {}: {}".format(gene_symbol, ", ".join(prev_symbol)))
     
@@ -161,7 +201,15 @@ def get_prev_symbol(gene_symbol, verbose = True):
 
 
 def get_id(gene_symbol, verbose = True):
-    """ get the id of gene symbol """
+    """ get the id of gene symbol 
+    
+    Args:
+    - gene_symbol: str
+    - verbose: bool
+
+    Returns:
+    - list of str
+    """
 
     ext = "search/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -186,7 +234,18 @@ def get_id(gene_symbol, verbose = True):
 
 
 def get_symbol_from_id(gene_id, verbose = True):
-    """ get the gene symbol from a gene id """
+    """ get the gene symbol from a gene id 
+    
+    Args:
+    - gene_id: str
+    - verbose: bool
+
+    Returns:
+    - list of str
+    """
+
+    if not gene_id[0].isdigit():
+        return
 
     ext = "search/hgnc_id/{}".format(gene_id)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -199,6 +258,7 @@ def get_symbol_from_id(gene_id, verbose = True):
             print("{}\t{}".format(gene_id, gene_symbol))
 
         return gene_symbol
+
     elif len(res) == 0:
         if verbose:
             print("Got not symbol for {}".format(gene_id))
@@ -206,12 +266,11 @@ def get_symbol_from_id(gene_id, verbose = True):
         return
 
 
-def main(path):
+def main():
     pass
 
 
 if __name__ == "__main__":
-    # get_new_symbol("KAL1")
     parser = argparse.ArgumentParser(description = "HGNC api interface (kinda)")
     subparsers = parser.add_subparsers(help = "Commands")
 
@@ -219,9 +278,13 @@ if __name__ == "__main__":
     new_symbol.add_argument("gene_symbol", help = "Gene symbol")
     new_symbol.set_defaults(func = get_new_symbol)
 
-    alias = subparsers.add_parser("alias", help = "Get the aliases")
+    alias = subparsers.add_parser("alias", help = "Get the aliases of given symbol")
     alias.add_argument("gene_symbol", help = "Gene symbol")
     alias.set_defaults(func = get_alias)
+
+    alias = subparsers.add_parser("main_symbol", help = "Get the main symbol from alias")
+    alias.add_argument("gene_symbol", help = "Gene symbol")
+    alias.set_defaults(func = get_main_symbol)
 
     prev_symbol = subparsers.add_parser("prev_symbol", help = "Get the previous symbol")
     prev_symbol.add_argument("gene_symbol", help = "Gene symbol")
