@@ -34,6 +34,7 @@ def get_new_symbol(gene_symbol: str, verbose: bool = True):
 
     Returns:
     - str
+    - None
     """
 
     ext = "search/prev_symbol/{}".format(gene_symbol)
@@ -69,6 +70,7 @@ def get_gene_starting_with(gene_symbol: str, verbose: bool = True):
 
     Returns:
     - list of str
+    - None
     """
 
     ext = "search/symbol/{}*".format(gene_symbol)
@@ -102,6 +104,7 @@ def get_alias(gene_symbol, verbose = True):
 
     Returns:
     - list of str
+    - None
     """
 
     ext = "fetch/symbol/{}".format(gene_symbol)
@@ -135,6 +138,8 @@ def get_alias(gene_symbol, verbose = True):
 
 def get_main_symbol(gene_symbol, verbose = True):
     """ get the main symbol of given symbol
+
+    Returns None if symbol is already the "main" symbol
     
     Args:
     - gene_symbol: str
@@ -142,6 +147,7 @@ def get_main_symbol(gene_symbol, verbose = True):
 
     Returns:
     - list of str
+    - None
     """
 
     ext = "search/alias_symbol/{}".format(gene_symbol)
@@ -174,6 +180,7 @@ def get_prev_symbol(gene_symbol, verbose = True):
 
     Returns:
     - list of str
+    - None
     """
 
     ext = "fetch/symbol/{}".format(gene_symbol)
@@ -208,7 +215,8 @@ def get_id(gene_symbol, verbose = True):
     - verbose: bool
 
     Returns:
-    - list of str
+    - str
+    - None
     """
 
     ext = "search/{}".format(gene_symbol)
@@ -241,7 +249,8 @@ def get_symbol_from_id(gene_id, verbose = True):
     - verbose: bool
 
     Returns:
-    - list of str
+    - str
+    - None
     """
 
     if not gene_id[0].isdigit():
