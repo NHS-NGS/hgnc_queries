@@ -37,6 +37,8 @@ def get_new_symbol(gene_symbol: str, verbose: bool = True):
     - None
     """
 
+    gene_symbol = gene_symbol.upper()
+
     ext = "search/prev_symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
     res = data["response"]["docs"]
@@ -72,6 +74,8 @@ def get_gene_starting_with(gene_symbol: str, verbose: bool = True):
     - None
     """
 
+    gene_symbol = gene_symbol.upper()
+
     ext = "search/symbol/{}*".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
     res = data["response"]["docs"]
@@ -94,7 +98,7 @@ def get_gene_starting_with(gene_symbol: str, verbose: bool = True):
         return gene_symbols
 
 
-def get_alias(gene_symbol, verbose = True):
+def get_alias(gene_symbol: str, verbose: bool = True):
     """ get aliases of given symbol
 
     Args:
@@ -105,6 +109,8 @@ def get_alias(gene_symbol, verbose = True):
     - list of str
     - None
     """
+
+    gene_symbol = gene_symbol.upper()
 
     ext = "fetch/symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -136,7 +142,7 @@ def get_alias(gene_symbol, verbose = True):
         return
 
 
-def get_main_symbol(gene_symbol, verbose = True):
+def get_main_symbol(gene_symbol: str, verbose: bool = True):
     """ get the main symbol of given symbol
 
     Returns None if symbol is already the "main" symbol
@@ -149,6 +155,8 @@ def get_main_symbol(gene_symbol, verbose = True):
     - list of str
     - None
     """
+
+    gene_symbol = gene_symbol.upper()
 
     ext = "search/alias_symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -171,7 +179,7 @@ def get_main_symbol(gene_symbol, verbose = True):
         return
         
 
-def get_prev_symbol(gene_symbol, verbose = True):
+def get_prev_symbol(gene_symbol: str, verbose: bool = True):
     """ get the previous symbol of a gene
     
     Args:
@@ -182,6 +190,8 @@ def get_prev_symbol(gene_symbol, verbose = True):
     - list of str
     - None
     """
+
+    gene_symbol = gene_symbol.upper()
 
     ext = "fetch/symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -207,7 +217,7 @@ def get_prev_symbol(gene_symbol, verbose = True):
         return 
 
 
-def get_id(gene_symbol, verbose = True):
+def get_id(gene_symbol: str, verbose: bool = True):
     """ get the id of gene symbol 
     
     Args:
@@ -219,7 +229,9 @@ def get_id(gene_symbol, verbose = True):
     - None
     """
 
-    ext = "search/{}".format(gene_symbol)
+    gene_symbol = gene_symbol.upper()
+
+    ext = "fetch/symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
     res = data["response"]["docs"]
 
@@ -241,7 +253,7 @@ def get_id(gene_symbol, verbose = True):
     return 
 
 
-def get_symbol_from_id(gene_id, verbose = True):
+def get_symbol_from_id(gene_id: str, verbose: bool = True):
     """ get the gene symbol from a gene id 
     
     Args:
@@ -317,7 +329,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     if hasattr(args, "gene_symbol"):
-        gene_symbol = args.gene_symbol
+        gene_symbol = args.gene_symbol.upper()
         args.func(gene_symbol)
 
     elif hasattr(args, "gene_id"):
