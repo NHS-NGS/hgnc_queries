@@ -1,11 +1,36 @@
-HGNC_api.py 
+# hgnc_queries.py 
 
-Located in `/mnt/storage/home/kimy/projects/HGNC_api/bin/`
+Query HGNC for gene symbols.  
+Created to attempt to rescue old gene symbols because of an old excel "database" that had to be converted in a Django database
+
+## Installation
+
+```
+pip install hgnc_queries
+```
+
+## Examples:
 
 Use HGNC api to get:
-- New symbol --> `python HGNC_api.py new_symbol $gene`
-- Alias --> `python HGNC_api.py alias $gene`
-- Previous symbol --> `python HGNC_api.py prev_symbol $gene`
-- Gene starting with --> `python HGNC_api.py gene $gene`
-- HGNC id --> `python HGNC_api.py id $gene`
-- Symbol from id --> `python HGNC_api.py id2symbol $gene_id`
+```
+# Get new symbol
+python hgnc_queries.py new_symbol $gene
+
+# Get aliases of given symbol
+python hgnc_queries.py alias $gene
+
+# Get main symbol of alias
+python hgnc_queries.py main_symbol $gene
+
+# Get previous symbol
+python hgnc_queries.py prev_symbol $gene
+
+# Get genes starting with
+python hgnc_queries.py gene $gene
+
+# Get HGNC id of given symbol
+python hgnc_queries.py id $gene
+
+# Get symbol of given id
+python hgnc_queries.py id2symbol $gene_id
+```
