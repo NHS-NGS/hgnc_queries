@@ -50,8 +50,7 @@ def get_new_symbol(gene_symbol: str, verbose: bool = True):
         if verbose:
             print("2 or more different genes share this symbol {}:".format(gene_symbol))
         
-        for gene in res:
-            if verbose:
+            for gene in res:
                 print(gene)
 
         return
@@ -80,6 +79,7 @@ def get_gene_starting_with(gene_symbol: str, verbose: bool = True):
     if res == []:
         if verbose:
             print("No gene found starting with {}".format(gene_symbol))
+
         return
     
     else:
@@ -88,8 +88,7 @@ def get_gene_starting_with(gene_symbol: str, verbose: bool = True):
         if verbose:
             print("Found these genes starting with {}:".format(gene_symbol))
         
-        for symbol in gene_symbols:
-            if verbose:
+            for symbol in gene_symbols:
                 print(symbol)
 
         return gene_symbols
@@ -124,6 +123,7 @@ def get_alias(gene_symbol, verbose = True):
                 print("Alias symbols for {}: {}".format(gene_symbol, display_aliases))
     
             return aliases
+
         else:
             if verbose:
                 print("No aliases for {}".format(gene_symbol))
@@ -254,6 +254,9 @@ def get_symbol_from_id(gene_id, verbose = True):
     """
 
     if not gene_id[0].isdigit():
+        if verbose:
+            print("{} doesn't start with a digit".format(gene_id))
+        
         return
 
     ext = "search/hgnc_id/{}".format(gene_id)
@@ -270,7 +273,7 @@ def get_symbol_from_id(gene_id, verbose = True):
 
     elif len(res) == 0:
         if verbose:
-            print("Got not symbol for {}".format(gene_id))
+            print("Got no symbol for {}".format(gene_id))
 
         return
 
@@ -291,9 +294,9 @@ if __name__ == "__main__":
     alias.add_argument("gene_symbol", help = "Gene symbol")
     alias.set_defaults(func = get_alias)
 
-    alias = subparsers.add_parser("main_symbol", help = "Get the main symbol from alias")
-    alias.add_argument("gene_symbol", help = "Gene symbol")
-    alias.set_defaults(func = get_main_symbol)
+    main_symbol = subparsers.add_parser("main_symbol", help = "Get the main symbol from alias")
+    main_symbol.add_argument("gene_symbol", help = "Gene symbol")
+    main_symbol.set_defaults(func = get_main_symbol)
 
     prev_symbol = subparsers.add_parser("prev_symbol", help = "Get the previous symbol")
     prev_symbol.add_argument("gene_symbol", help = "Gene symbol")
