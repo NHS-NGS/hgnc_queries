@@ -76,7 +76,7 @@ def test_get_main_symbol_res():
 
 def test_get_prev_symbol_no_res():
     assert(
-        hq.get_prev_symbol("ARID1B", False) == None
+        hq.get_prev_symbol("No exist", False) == None
     )
 
 
@@ -109,10 +109,15 @@ def test_get_id_one_res():
 
 ###########################################################################
 
-def test_get_symbol_from_id_no_res():
+def test_get_symbol_from_id_not_ID():
     assert(
         hq.get_symbol_from_id("No exist", False) == None
     )    
+
+def test_get_symbol_from_id_no_res():
+    assert(
+        hq.get_symbol_from_id("54974894564156", False) == None
+    )
 
 def test_get_symbol_from_id_one_res():
     truth = "BRAF"
