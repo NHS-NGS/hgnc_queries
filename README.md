@@ -23,15 +23,15 @@ RNA5SP49
 >> hgnc_queries.get_alias("ARID1B", verbose = False)
 ["KIAA1235", "ELD/OSA1", "p250R", "BAF250b", "DAN15", "6A3-5"]
 
->> hgnc_queries.get_main_symbol(BRAF1)
+>> hgnc_queries.get_main_symbol(BRAF1, verbose = False)
 BRAF
 
->> hgnc_queries.get_prev_symbol("COL2A1")
+>> hgnc_queries.get_prev_symbol("COL2A1", verbose = False)
 ["SEDC", "AOM"]
 
->> hgnc_queries.get_id("BRAF")
+>> hgnc_queries.get_id("BRAF", verbose = False)
 HGNC:1097
 
->>hgnc_queries.get_symbol_from_id("1097")
+>>hgnc_queries.get_symbol_from_id("1097", verbose = False)
 BRAF
 ```
