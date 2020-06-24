@@ -71,8 +71,8 @@ def get_new_symbol(gene_symbol: str, verbose: bool = True):
 
 
 def get_gene_starting_with(gene_symbol: str, verbose: bool = True):
-    """ get the genes that start with the symbol given 
-    
+    """ get the genes that start with the symbol given
+
     Args:
     - gene_symbol: str
     - verbose: bool
@@ -93,13 +93,13 @@ def get_gene_starting_with(gene_symbol: str, verbose: bool = True):
             print("No gene found starting with {}".format(gene_symbol))
 
         return
-    
+
     else:
         gene_symbols = [res[i]["symbol"] for i in range(len(res))]
-        
+
         if verbose:
             print("Found these genes starting with {}:".format(gene_symbol))
-        
+
             for symbol in gene_symbols:
                 print(symbol)
 
@@ -127,22 +127,25 @@ def get_alias(gene_symbol: str, verbose: bool = True):
     if len(res) == 1:
         if "alias_symbol" in res[0]:
             aliases = res[0]["alias_symbol"]
-    
+
             if verbose:
                 if isinstance(aliases, list):
                     display_aliases = ", ".join(aliases)
                 else:
                     display_aliases = aliases
 
-                print("Alias symbols for {}: {}".format(gene_symbol, display_aliases))
-    
+                print("Alias symbols for {}: {}".format(
+                    gene_symbol,
+                    display_aliases
+                ))
+
             return aliases
 
         else:
             if verbose:
                 print("No aliases for {}".format(gene_symbol))
 
-            return 
+            return
     else:
         if verbose:
             print("Couldn't get alias for {}".format(gene_symbol))
@@ -154,7 +157,7 @@ def get_main_symbol(gene_symbol: str, verbose: bool = True):
     """ get the main symbol of given symbol
 
     Returns None if symbol is already the "main" symbol
-    
+
     Args:
     - gene_symbol: str
     - verbose: bool
@@ -175,21 +178,24 @@ def get_main_symbol(gene_symbol: str, verbose: bool = True):
             main_symbol = res[0]["symbol"]
 
             if verbose:
-                print("Main symbol for {}: {}".format(gene_symbol, main_symbol))
-    
+                print("Main symbol for {}: {}".format(
+                    gene_symbol,
+                    main_symbol
+                ))
+
             return main_symbol
         else:
             if verbose:
                 print("No main_symbol for {}".format(gene_symbol))
 
-            return 
+            return
     else:
         return
 
 
 def get_prev_symbol(gene_symbol: str, verbose: bool = True):
     """ get the previous symbol of a gene
-    
+
     Args:
     - gene_symbol: str
     - verbose: bool
@@ -210,24 +216,27 @@ def get_prev_symbol(gene_symbol: str, verbose: bool = True):
             prev_symbol = res[0]["prev_symbol"]
 
             if verbose:
-                print("Previous symbols for {}: {}".format(gene_symbol, ", ".join(prev_symbol)))
-    
+                print("Previous symbols for {}: {}".format(
+                    gene_symbol,
+                    ", ".join(prev_symbol)
+                ))
+
             return prev_symbol
         else:
             if verbose:
                 print("No previous symbol for {}".format(gene_symbol))
 
-            return 
+            return
     else:
         if verbose:
             print("Couldn't get prev symbols for {}".format(gene_symbol))
 
-        return 
+        return
 
 
 def get_id(gene_symbol: str, verbose: bool = True):
-    """ get the id of gene symbol 
-    
+    """ get the id of gene symbol
+
     Args:
     - gene_symbol: str
     - verbose: bool
@@ -245,10 +254,10 @@ def get_id(gene_symbol: str, verbose: bool = True):
 
     if len(res) == 1:
         gene_id = res[0]["hgnc_id"]
-        
+
         if verbose:
             print("{}\t{}".format(gene_symbol, gene_id))
-    
+
         return gene_id
     else:
         for data in res:
@@ -257,13 +266,13 @@ def get_id(gene_symbol: str, verbose: bool = True):
 
         if verbose:
             print("Couldn't get the id for {}".format(gene_symbol))
-            
-    return 
+
+    return
 
 
 def get_symbol_from_id(gene_id: str, verbose: bool = True):
-    """ get the gene symbol from a gene id 
-    
+    """ get the gene symbol from a gene id
+
     Args:
     - gene_id: str
     - verbose: bool
@@ -276,7 +285,7 @@ def get_symbol_from_id(gene_id: str, verbose: bool = True):
     if not gene_id[0].isdigit():
         if verbose:
             print("{} doesn't start with a digit".format(gene_id))
-        
+
         return
 
     ext = "search/hgnc_id/{}".format(gene_id)
@@ -331,7 +340,7 @@ if __name__ == "__main__":
         help="Get the previous symbol"
     )
     prev_symbol.add_argument("gene_symbol", help="Gene symbol")
-    prev_symbol.set_defaults(func=get_prev_symbol)    
+    prev_symbol.set_defaults(func=get_prev_symbol) 
 
     gene_symbol = subparsers.add_parser(
         "gene",
