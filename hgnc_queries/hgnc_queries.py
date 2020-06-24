@@ -309,7 +309,7 @@ def get_symbol_from_id(gene_id: str, verbose: bool = True):
 
 def get_hgnc_symbol(gene_symbol: str):
     """ get the official hgnc symbol from a gene symbol
-    
+
     Args:
     - gene_id: str
     - verbose: bool
@@ -330,7 +330,6 @@ def get_hgnc_symbol(gene_symbol: str):
             return main_symbol
         else:
             return
-
 
 
 def main():
@@ -366,7 +365,7 @@ if __name__ == "__main__":
         help="Get the previous symbol"
     )
     prev_symbol.add_argument("gene_symbol", help="Gene symbol")
-    prev_symbol.set_defaults(func=get_prev_symbol) 
+    prev_symbol.set_defaults(func=get_prev_symbol)
 
     gene_symbol = subparsers.add_parser(
         "gene",
