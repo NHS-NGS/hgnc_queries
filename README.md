@@ -11,26 +11,27 @@ pip install hgnc_queries
 
 ## Examples:
 
-Use HGNC api to get:
+Use HGNC queries to get:
 ```
-# Get new symbol
-python hgnc_queries.py new_symbol $gene
+>> import hgnc_queries
+>> hgnc_queries.get_new_symbol("RN5S49", verbose = False)
+RNA5SP49
 
-# Get aliases of given symbol
-python hgnc_queries.py alias $gene
+>> hgnc_queries.get_gene_starting_with("BRCA", verbose = False)
+["BRCA1", "BRCA1P1", "BRCA2", "BRCA3"]
 
-# Get main symbol of alias
-python hgnc_queries.py main_symbol $gene
+>> hgnc_queries.get_alias("ARID1B", verbose = False)
+["KIAA1235", "ELD/OSA1", "p250R", "BAF250b", "DAN15", "6A3-5"]
 
-# Get previous symbol
-python hgnc_queries.py prev_symbol $gene
+>> hgnc_queries.get_main_symbol(BRAF1, verbose = False)
+BRAF
 
-# Get genes starting with
-python hgnc_queries.py gene $gene
+>> hgnc_queries.get_prev_symbol("COL2A1", verbose = False)
+["SEDC", "AOM"]
 
-# Get HGNC id of given symbol
-python hgnc_queries.py id $gene
+>> hgnc_queries.get_id("BRAF", verbose = False)
+HGNC:1097
 
-# Get symbol of given id
-python hgnc_queries.py id2symbol $gene_id
+>>hgnc_queries.get_symbol_from_id("1097", verbose = False)
+BRAF
 ```

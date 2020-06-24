@@ -307,6 +307,32 @@ def get_symbol_from_id(gene_id: str, verbose: bool = True):
         return
 
 
+def get_hgnc_symbol(gene_symbol: str):
+    """ get the official hgnc symbol from a gene symbol
+    
+    Args:
+    - gene_id: str
+    - verbose: bool
+
+    Returns:
+    - str
+    - None
+    """
+
+    new_symbol = get_new_symbol(gene_symbol, False)
+
+    if new_symbol:
+        return new_symbol
+    else:
+        main_symbol = get_main_symbol(gene_symbol, False)
+
+        if main_symbol:
+            return main_symbol
+        else:
+            return
+
+
+
 def main():
     pass
 
