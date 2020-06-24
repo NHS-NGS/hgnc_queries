@@ -34,4 +34,11 @@ HGNC:1097
 
 >>hgnc_queries.get_symbol_from_id("1097", verbose = False)
 BRAF
+
+# new function more for in-script use
+# get the hgnc symbol if gene symbol not recognized by the process you're using
+>>print(queries.get_hgnc_symbol("RN5S49"))
+RNA5SP49
+>>print(queries.get_hgnc_symbol("BRAF1"))
+BRAF
 ```
