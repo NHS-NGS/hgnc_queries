@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hgnc_queries",
-    version="0.0.1",
+    version="0.0.2",
     author="Yujin Kim",
     author_email="yujin.kim@hotmail.fr",
     description="Make HGNC queries for gene symbols",
