@@ -6,7 +6,7 @@ Created to attempt to rescue old gene symbols because of an old excel "database"
 ## Installation
 
 ```
-pip install hgnc_queries
+pip install hgnc-queries
 ```
 
 ## Examples:
