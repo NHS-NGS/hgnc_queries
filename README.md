@@ -32,13 +32,23 @@ BRAF
 >> hgnc_queries.get_id("BRAF", verbose = False)
 HGNC:1097
 
->>hgnc_queries.get_symbol_from_id("1097", verbose = False)
+>> hgnc_queries.get_symbol_from_id("1097", verbose = False)
 BRAF
 
 # new function more for in-script use
 # get the hgnc symbol if gene symbol not recognized by the process you're using
->>print(queries.get_hgnc_symbol("RN5S49"))
+>> print(queries.get_hgnc_symbol("RN5S49"))
 RNA5SP49
->>print(queries.get_hgnc_symbol("BRAF1"))
+>> print(queries.get_hgnc_symbol("BRAF1"))
 BRAF
+
+>> hgnc_queries.get_refseq("BRCA1", False)
+['NM_007294']
+>> hgnc_queries.get_ensembl("BRCA1", False)
+"ENSG00000012048"
+
+>> hgnc_queries.convert_refseq2ensembl("NM_007294", False)
+"ENSG00000012048"
+>> hgnc_queries.convert_ensembl2refseq("ENSG00000012048", False)
+['NM_007294']
 ```
