@@ -1,6 +1,7 @@
-import requests
-import sys
 import json
+import sys
+
+import requests
 
 URL = "http://rest.genenames.org"
 
