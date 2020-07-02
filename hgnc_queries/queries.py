@@ -1,9 +1,3 @@
-""" hgnc_queries.py
-
-Fetch data from HGNC api
-"""
-
-import argparse
 from .api import get_api_response, URL
 
 
@@ -19,7 +13,7 @@ def get_new_symbol(gene_symbol: str, verbose: bool = True):
     - None
     """
 
-    gene_symbol = gene_symbol.upper()
+    gene_symbol = gene_symbol.strip().upper()
 
     ext = "search/prev_symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -61,7 +55,7 @@ def get_gene_starting_with(gene_symbol: str, verbose: bool = True):
     - None
     """
 
-    gene_symbol = gene_symbol.upper()
+    gene_symbol = gene_symbol.strip().upper()
 
     ext = "search/symbol/{}*".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -97,7 +91,7 @@ def get_alias(gene_symbol: str, verbose: bool = True):
     - None
     """
 
-    gene_symbol = gene_symbol.upper()
+    gene_symbol = gene_symbol.strip().upper()
 
     ext = "fetch/symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -146,7 +140,7 @@ def get_main_symbol(gene_symbol: str, verbose: bool = True):
     - None
     """
 
-    gene_symbol = gene_symbol.upper()
+    gene_symbol = gene_symbol.strip().upper()
 
     ext = "search/alias_symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -184,7 +178,7 @@ def get_prev_symbol(gene_symbol: str, verbose: bool = True):
     - None
     """
 
-    gene_symbol = gene_symbol.upper()
+    gene_symbol = gene_symbol.strip().upper()
 
     ext = "fetch/symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -225,7 +219,7 @@ def get_id(gene_symbol: str, verbose: bool = True):
     - None
     """
 
-    gene_symbol = gene_symbol.upper()
+    gene_symbol = gene_symbol.strip().upper()
 
     ext = "fetch/symbol/{}".format(gene_symbol)
     data = get_api_response("{}/{}".format(URL, ext))
@@ -267,6 +261,8 @@ def get_symbol_from_id(gene_id: str, verbose: bool = True):
 
         return
 
+    gene_id = gene_id.strip()
+
     ext = "search/hgnc_id/{}".format(gene_id)
     data = get_api_response("{}/{}".format(URL, ext))
     res = data["response"]["docs"]
@@ -298,6 +294,8 @@ def get_hgnc_symbol(gene_symbol: str):
     - None
     """
 
+    gene_symbol = gene_symbol.strip()
+
     new_symbol = get_new_symbol(gene_symbol, False)
 
     if new_symbol:
@@ -311,68 +309,65 @@ def get_hgnc_symbol(gene_symbol: str):
             return
 
 
-def main():
-    pass
+def get_refseq(gene_symbol: str, verbose: bool = True):
+    """ Get refseq given a gene symbol
+
+    Args:
+        gene_symbol (str): Gene symbol
+        verbose (bool, optional): Prints the output. Defaults to True.
+
+    Returns:
+        None
+        refseq (str)
+    """
+
+    gene_symbol = gene_symbol.strip().upper()
+
+    ext = "fetch/symbol/{}".format(gene_symbol)
+    data = get_api_response("{}/{}".format(URL, ext))
+    res = data["response"]["docs"]
+
+    if not res:
+        if verbose:
+            print("Gene \"{}\" not found".format(gene_symbol))
+
+        return
+    else:
+        refseq = res[0]["refseq_accession"]
+
+        if verbose:
+            print("Refseq for \"{}\": {}".format(gene_symbol, refseq))
+
+        return refseq
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Script to interface with the HGNC api"
-    )
-    subparsers = parser.add_subparsers(help="Commands")
+def get_ensembl(gene_symbol: str, verbose: bool = True):
+    """ Get the ensembl id for given gene symbol
 
-    new_symbol = subparsers.add_parser("new_symbol", help="Get the new symbol")
-    new_symbol.add_argument("gene_symbol", help="Gene symbol")
-    new_symbol.set_defaults(func=get_new_symbol)
+    Args:
+        gene_symbol (str): Gene symbol
+        verbose (bool, optional): Prints the output. Defaults to True.
 
-    alias = subparsers.add_parser(
-        "alias",
-        help="Get the aliases of given symbol"
-    )
-    alias.add_argument("gene_symbol", help="Gene symbol")
-    alias.set_defaults(func=get_alias)
+    Returns:
+        None
+        ensembl_id (str)
+    """
 
-    main_symbol = subparsers.add_parser(
-        "main_symbol",
-        help="Get the main symbol from alias"
-    )
-    main_symbol.add_argument("gene_symbol", help="Gene symbol")
-    main_symbol.set_defaults(func=get_main_symbol)
+    gene_symbol = gene_symbol.strip().upper()
 
-    prev_symbol = subparsers.add_parser(
-        "prev_symbol",
-        help="Get the previous symbol"
-    )
-    prev_symbol.add_argument("gene_symbol", help="Gene symbol")
-    prev_symbol.set_defaults(func=get_prev_symbol)
+    ext = "fetch/symbol/{}".format(gene_symbol)
+    data = get_api_response("{}/{}".format(URL, ext))
+    res = data["response"]["docs"]
 
-    gene_symbol = subparsers.add_parser(
-        "gene",
-        help="Get the gene symbols starting with"
-    )
-    gene_symbol.add_argument("gene_symbol", help="Gene symbol")
-    gene_symbol.set_defaults(func=get_gene_starting_with)
+    if not res:
+        if verbose:
+            print("Gene \"{}\" not found".format(gene_symbol))
 
-    gene_id = subparsers.add_parser(
-        "id",
-        help="Get the ID from a gene symbol"
-    )
-    gene_id.add_argument("gene_symbol", help="Gene symbol")
-    gene_id.set_defaults(func=get_id)
+        return
+    else:
+        ensembl_id = res[0]["ensembl_gene_id"]
 
-    id2symbol = subparsers.add_parser(
-        "id2symbol",
-        help="Get the gene symbol from the id"
-    )
-    id2symbol.add_argument("gene_id", help="Gene ID")
-    id2symbol.set_defaults(func=get_symbol_from_id)
+        if verbose:
+            print("Ensembl_id for \"{}\": {}".format(gene_symbol, ensembl_id))
 
-    args = parser.parse_args()
-
-    if hasattr(args, "gene_symbol"):
-        gene_symbol = args.gene_symbol.upper()
-        args.func(gene_symbol)
-
-    elif hasattr(args, "gene_id"):
-        gene_id = args.gene_id
-        args.func(gene_id)
+        return ensembl_id
